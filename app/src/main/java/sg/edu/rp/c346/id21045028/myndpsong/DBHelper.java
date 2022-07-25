@@ -108,12 +108,38 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public ArrayList<Note> getAllNotes(String keyword) {
+    public ArrayList<Note> getAllNotesRating(String keyword) {
         ArrayList<Note> notes = new ArrayList<Note>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns= {COLUMN_ID, COLUMN_Title,COLUMN_Singer,COLUMN_Year,COLUMN_Rating};
         String condition = COLUMN_Rating + " Like ?";
+        String[] args = { "%" +  keyword + "%"};
+        Cursor cursor = db.query(TABLE_NOTE, columns, condition, args,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String singer = cursor.getString(2);
+                String year = cursor.getString(3);
+                String rating = cursor.getString(4);
+                Note note = new Note(id, title , singer,year,rating);
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return notes;
+    }
+
+    public ArrayList<Note> getAllNotesYear(String keyword) {
+        ArrayList<Note> notes = new ArrayList<Note>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns= {COLUMN_ID, COLUMN_Title,COLUMN_Singer,COLUMN_Year,COLUMN_Rating};
+        String condition = COLUMN_Year + " Like ?";
         String[] args = { "%" +  keyword + "%"};
         Cursor cursor = db.query(TABLE_NOTE, columns, condition, args,
                 null, null, null, null);

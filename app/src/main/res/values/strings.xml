@@ -10,4 +10,5 @@
     <string name="btn4">Update</string>
     <string name="btn5">Delete</string>
     <string name="btn6">Back</string>
+    <string name="btn7">Search</string>
 </resources>

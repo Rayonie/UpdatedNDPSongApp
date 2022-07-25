@@ -10,13 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ShowSongActivity extends AppCompatActivity {
 
     Button btnFilter;
     Button btnback;
+    Button btnSearch;
+    Spinner yearFilter;
     ListView SongList;
     ArrayList<Note> al;
     ArrayAdapter<CustomAdapter> aa;
@@ -28,11 +32,48 @@ public class ShowSongActivity extends AppCompatActivity {
 
         SongList = findViewById(R.id.SongList);
         btnFilter = findViewById(R.id.BtnFilter);
+        btnSearch = findViewById(R.id.btnSearch);
+        yearFilter =(Spinner)findViewById(R.id.year_spinner);
         btnback = findViewById(R.id.BtnBack);
 
         al = new ArrayList<Note>();
         aa = new CustomAdapter(this,
                 R.layout.row, al);
+
+        ArrayList<String> years = new ArrayList<String>();
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = 1980; i <= thisYear ; i++) {
+            years.add(Integer.toString(i));
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
+        yearFilter.setAdapter(adapter);
+        yearFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int i, long id) {
+                DBHelper dbh = new DBHelper(ShowSongActivity.this);
+                al.clear();
+                String filterText = years.get(i);
+                if(filterText.length() == 0) {
+                    al.addAll(dbh.getAllNotes());
+                }
+                else{
+                    al.addAll(dbh.getAllNotesYear(filterText));
+                }
+                aa.notifyDataSetChanged();
+            }
+
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                DBHelper dbh = new DBHelper(ShowSongActivity.this);
+                al.clear();
+                al.addAll(dbh.getAllNotes());
+                aa.notifyDataSetChanged();
+            }
+        });
+
+
         SongList.setAdapter(aa);
         SongList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -51,6 +92,8 @@ public class ShowSongActivity extends AppCompatActivity {
         al.addAll(dbh.getAllNotes());
         aa.notifyDataSetChanged();
 
+
+
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +104,7 @@ public class ShowSongActivity extends AppCompatActivity {
                     al.addAll(dbh.getAllNotes());
                 }
                 else{
-                    al.addAll(dbh.getAllNotes(filterText));
+                    al.addAll(dbh.getAllNotesRating(filterText));
                 }
                 aa.notifyDataSetChanged();
             }
