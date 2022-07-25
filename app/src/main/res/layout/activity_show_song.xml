@@ -11,24 +11,11 @@
         android:layout_height="wrap_content"
         android:text="@string/btn3" />
 
-    <LinearLayout
+    <Spinner
+        android:id="@+id/year_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/year_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="@string/btn7" />
-    </LinearLayout>
+        android:layout_weight="1" />
 
     <ListView
         android:id="@+id/SongList"

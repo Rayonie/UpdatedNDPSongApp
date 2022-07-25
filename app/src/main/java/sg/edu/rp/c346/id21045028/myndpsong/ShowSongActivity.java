@@ -19,7 +19,6 @@ public class ShowSongActivity extends AppCompatActivity {
 
     Button btnFilter;
     Button btnback;
-    Button btnSearch;
     Spinner yearFilter;
     ListView SongList;
     ArrayList<Note> al;
@@ -32,7 +31,6 @@ public class ShowSongActivity extends AppCompatActivity {
 
         SongList = findViewById(R.id.SongList);
         btnFilter = findViewById(R.id.BtnFilter);
-        btnSearch = findViewById(R.id.btnSearch);
         yearFilter =(Spinner)findViewById(R.id.year_spinner);
         btnback = findViewById(R.id.BtnBack);
 
